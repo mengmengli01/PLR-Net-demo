@@ -1,5 +1,6 @@
 # PLR-Net_torch_version
 Official Pytorch Code base for "Extracting vectorized agricultural parcels from high-resolution satellite images using a Point-Line-Region interactive multi-task model"
+`PLRNet/Fig_2_Methods.png`
 # Training & Testing
 
   The structure of the data file should be like:
