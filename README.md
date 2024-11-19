@@ -3,6 +3,7 @@ Official Pytorch Code base for "Extracting vectorized agricultural parcels from 
 <div align="center">
   <img src="PLRNet/Fig_2_Methods.png">
 </div>
+
 # Training & Testing
 
   The structure of the data file should be like:
