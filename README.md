@@ -32,3 +32,5 @@ Official Pytorch Code base for "Extracting vectorized agricultural parcels from 
 
 # GF-2 dataset
 A GF2 image (0.8m) and training weight is provided for scientific use: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hql4
+# Sentinel-2 dataset
+The remote sensing image of the Netherlands study area was obtained from PDOK (https://collections.eurodatacube.com/), and the ground truth for the Sentinel-2 dataset in Netherlands were obtained from https://www.pdok.nl/.
