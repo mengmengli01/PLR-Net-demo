@@ -31,10 +31,10 @@ Official Pytorch Code base for "Extracting vectorized agricultural parcels from 
     python scripts/test.py --config-file config-files/PLR-Net.yaml
 
 # GF-2 dataset
-Xinjiang dataset: A GF2 image (1m) and a corresponding partial field label are provided for scientific use: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hql4
+Xinjiang dataset: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hql4
 
-Shandong dataset: A GF2 image (1m) and a corresponding partial field label are provided for scientific study: https://drive.google.com/drive/folders/1s1S4KhW33eo9ylsIqfUskNXl3XLBSADL?usp=sharing
+Shandong dataset: https://drive.google.com/drive/folders/1s1S4KhW33eo9ylsIqfUskNXl3XLBSADL?usp=sharing
 
-Sichuan dataset: A GF2 image (1m) and corresponding partial field label are provided for scientific study: https://drive.google.com/drive/folders/1GxGSerKCtoge-uIq1Rfec0GwSkw0CvQn?usp=sharing
+Sichuan dataset:  https://drive.google.com/drive/folders/1GxGSerKCtoge-uIq1Rfec0GwSkw0CvQn?usp=sharing
 # Sentinel-2 dataset
 The remote sensing image of the Netherlands study area was obtained from PDOK (https://collections.eurodatacube.com/), and the ground truth for the Sentinel-2 dataset in Netherlands were obtained from https://www.pdok.nl/.
