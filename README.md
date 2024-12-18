@@ -31,7 +31,7 @@ Official Pytorch Code base for "Extracting vectorized agricultural parcels from 
     python scripts/test.py --config-file config-files/PLR-Net.yaml
 
 # GF-2 dataset
-Xinjiang dataset: A GF2 image (1m) and training weight are provided for scientific use: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hql4
+Xinjiang dataset: A GF2 image (1m) and a corresponding partial field label are provided for scientific use: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hql4
 
 Shandong dataset: A GF2 image (1m) and a corresponding partial field label are provided for scientific study: https://drive.google.com/drive/folders/1s1S4KhW33eo9ylsIqfUskNXl3XLBSADL?usp=sharing
 
