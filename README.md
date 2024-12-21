@@ -36,5 +36,3 @@ Xinjiang dataset: https://pan.baidu.com/s/16h4mlkxFfaOuX1HRDPholQ, password：hq
 Shandong dataset: https://drive.google.com/drive/folders/1s1S4KhW33eo9ylsIqfUskNXl3XLBSADL?usp=sharing
 
 Sichuan dataset:  https://drive.google.com/drive/folders/1GxGSerKCtoge-uIq1Rfec0GwSkw0CvQn?usp=sharing
-# Sentinel-2 dataset
-The remote sensing image of the Netherlands study area was obtained from PDOK (https://collections.eurodatacube.com/), and the ground truth for the Sentinel-2 dataset in Netherlands were obtained from https://www.pdok.nl/.
