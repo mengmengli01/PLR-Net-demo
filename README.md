@@ -1,6 +1,8 @@
 # PLR-Net_torch_version
 Official Pytorch Code base for "Extracting vectorized agricultural parcels from high-resolution satellite images using a Point-Line-Region interactive multi-task model".
+
 ##### 1) More details regarding the codes will be available after the paper is accepted.
+
 ##### 2) You can always contact us by mli@fzu.edu.cn.
 
 <div align="center">
