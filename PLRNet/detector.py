@@ -71,65 +71,6 @@ class RAMAttention(nn.Module):
         return x1 * y.expand_as(x1)
 
 
-def cross_entropy_loss_for_junction(logits, positive):
-    nlogp = -F.log_softmax(logits, dim=1)
-
-    loss = (positive * nlogp[:, None, 1] + (1 - positive) * nlogp[:, None, 0])
-
-    return loss.mean()
-
-
-
-def sigmoid_l1_loss(logits, targets, offset=0.0, mask=None):
-
-    logp = torch.sigmoid(logits) + offset
-
-    loss = torch.abs(logp - targets)
-
-    if mask is not None:
-
-        t = ((mask == 1) | (mask == 2)).float()
-
-        w = t.mean(3, True).mean(2, True)
-
-        w[w == 0] = 1
-
-        loss = loss * (t / w)
-
-    return loss.mean()
-
-
-# Copyright (c) 2019 BangguWu, Qilong Wang
-# Modified by Bowen Xu, Jiakun Xu, Nan Xue and Gui-song Xia
-# https://www.baidu.com/link?url=9ZiUSU0b713_ex8r_rhOKQNpL4JDL90y4tmDvV58ESs_f6Lx-m2_PxnLzbrDekv_D2qlmWN3asEfP8_CTs0J7y3ou3rVbsklk9D__UeEdnG&wd=&eqid=af54eba60001705900000006643d3728
-class ECA(nn.Module):
-    def __init__(self, channel, gamma=2, b=1):
-        super(ECA, self).__init__()
-        C = channel
-
-        t = int(abs((log(C, 2) + b) / gamma))
-        k = t if t % 2 else t + 1
-
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-
-        self.conv = nn.Conv1d(1, 1, kernel_size=k, padding=int(k / 2), bias=False)
-        self.sigmoid = nn.Sigmoid()
-
-        self.out_conv = nn.Sequential(
-            nn.Conv2d(channel, channel, kernel_size=1, padding=0, bias=False),
-            nn.BatchNorm2d(channel),
-            nn.ReLU(inplace=True)
-        )
-
-    def forward(self, x1, x2):
-
-        y = self.avg_pool(x1 + x2)
-        y = self.conv(y.squeeze(-1).transpose(-1, -2))
-        y = y.transpose(-1, -2).unsqueeze(-1)
-        y = self.sigmoid(y)
-        out = self.out_conv(x2 * y.expand_as(x2))
-        return out
-
 
 class BuildingDetector(nn.Module):
     def __init__(self, cfg, test=False):
@@ -172,10 +113,7 @@ class BuildingDetector(nn.Module):
         self.train_step = 0
 
     def forward(self, images, annotations=None):
-        if self.training:
-            return self.forward_train(images, annotations=annotations)
-        else:
-            return self.forward_test(images, annotations=annotations)
+        return self.forward_test(images, annotations=annotations)
 
     def forward_test(self, images, annotations=None):
         device = images.device
@@ -262,53 +200,6 @@ class BuildingDetector(nn.Module):
         return output, extra_info
 
         # return output, mask
-
-    def forward_train(self, images, annotations=None):
-        self.train_step += 1
-
-        device = images.device
-
-        targets, metas = self.encoder(annotations)
-
-        outputs, features = self.backbone(images)
-
-        loss_dict = {
-            'loss_jloc': 0.0,
-            'loss_joff': 0.0,
-            'loss_mask': 0.0,
-            'loss_afm': 0.0,
-            'loss_remask': 0.0
-        }
-
-        mask_feature = self.mask_head(features)
-        jloc_feature = self.jloc_head(features)
-        afm_feature = self.afm_head(features)
-
-        # mask_att_feature = self.a2m_att(afm_feature, mask_feature)
-        # jloc_att_feature = self.a2j_att(afm_feature, jloc_feature)
-        mask_att_feature = self.a2m_att(mask_feature, mask_feature + afm_feature)
-        jloc_att_feature = self.a2j_att(jloc_feature, jloc_feature + afm_feature)
-
-        # mask_pred = self.mask_predictor(mask_feature + mask_att_feature)
-        # jloc_pred = self.jloc_predictor(jloc_feature + jloc_att_feature)
-        mask_pred = self.mask_predictor(mask_att_feature)
-        jloc_pred = self.jloc_predictor(jloc_att_feature)
-
-        afm_pred = self.afm_predictor(afm_feature)
-
-        afm_conv = self.refuse_conv(afm_pred)
-        # remask_pred = self.final_conv(torch.cat((features, afm_conv), dim=1))
-        remask_pred = self.final_conv(features + afm_conv)
-        if targets is not None:
-            loss_dict['loss_jloc'] += self.junc_loss(jloc_pred, targets['jloc'].squeeze(dim=1))
-            loss_dict['loss_joff'] += sigmoid_l1_loss(outputs[:, :], targets['joff'], -0.5, targets['jloc'])
-            loss_dict['loss_mask'] += F.cross_entropy(mask_pred, targets['mask'].squeeze(dim=1).long())
-            loss_dict['loss_afm'] += F.l1_loss(afm_pred, targets['afmap'])
-            loss_dict['loss_remask'] += F.cross_entropy(remask_pred, targets['mask'].squeeze(dim=1).long())
-        extra_info = {}
-
-        return loss_dict, extra_info
-
 
     def _make_conv(self, dim_in, dim_hid, dim_out):
         layer = nn.Sequential(
